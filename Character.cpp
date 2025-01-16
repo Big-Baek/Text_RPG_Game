@@ -45,19 +45,7 @@ void Character::GainExperience(int exp, int &mini, int &max)
 }
 
 
-// 데미지 받기
-void Character::TakeDamage(int damage)
-{
-    int effectiveDamage = (damage > AttackBoostAmount) ? (damage - AttackBoostAmount) : 0;
-    Health -= effectiveDamage;
-    if (Health < 0) Health = 0;
-    std::cout << Name << "이(가) " << effectiveDamage << " 피해를 입었습니다.\n";
-    AutoUseItems();
-    if (Health <= 0)
-    {
-        std::cout << "당신은 패배했습니다.\n";
-    }
-}
+
 
 // 상태창 출력
 void Character::DisplayStatus() const {
@@ -106,34 +94,29 @@ void Character::VisitShop(Shop* shop)
     } while (choice != 3);
 }
 
-// 인벤토리 표시
-void Character::ShowInventory() const
+void Character::ShowInventory()
 {
-    cout << "\n==================================\n";
+    std::cout << "\n==================================\n";
     std::cout << "인벤토리:\n";
-    if (Inventory.empty())
+    if(Inventory.empty())
     {
         std::cout << "인벤토리가 비어 있습니다.\n";
-    }
-    else
+    } else
     {
-        for (const auto& item : Inventory)
-        {
-            std::cout << item.first << ": " << item.second->GetAmount() << " 개\n";
-        }
+        sortInventory();
     }
 }
 
-// Inventory 정렬 함수
+
+
 void Character::sortInventory()
 {
-    // 정렬된 아이템을 담을 벡터 생성
-    std::vector<std::pair<std::string,std::unique_ptr<Item>>> sortedItems;
-
     // Inventory의 데이터를 벡터에 복사
+    std::vector<std::pair<std::string,std::unique_ptr<Item>>> sortedItems;
     for(auto& pair : Inventory)
     {
-        sortedItems.push_back(std::move(pair));  // 이동
+        // pair의 두 번째 요소인 unique_ptr을 이동하여 복사
+        sortedItems.push_back({pair.first,std::move(pair.second)});
     }
 
     // 이름 기준으로 정렬
@@ -148,6 +131,10 @@ void Character::sortInventory()
         Inventory[item.first] = std::move(item.second);  // 이동
     }
 }
+
+
+
+
 
 // 아이템 추가
 void Character::AddItem(std::unique_ptr<Item> item)

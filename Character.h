@@ -33,8 +33,6 @@ public:
     // 경험치 획득 메소드
     void GainExperience(int exp,int &mi, int &ma);
 
-    // 데미지 받기 메소드
-    void TakeDamage(int damage);
 
     // 캐릭터 상태 출력
     void DisplayStatus() const;
@@ -43,8 +41,9 @@ public:
     void VisitShop(Shop* shop);
 
     // 인벤토리 표시
-    void ShowInventory() const;
+    void ShowInventory();
 
+    // 인벤토리 정렬
     void sortInventory();
 
     // 아이템 추가 메소드
