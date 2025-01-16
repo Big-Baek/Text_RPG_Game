@@ -13,7 +13,7 @@ Character::Character(const std::string& name)
 }
 
 // 레벨업 기능
-void Character::LevelUp(int &mini, int &max)
+void Character::LevelUp(int& mini, int& max)
 {
     Level++;
     MaxHealth += 20;
@@ -28,18 +28,18 @@ void Character::LevelUp(int &mini, int &max)
 
 
 // 경험치 획득 및 레벨업 체크
-void Character::GainExperience(int exp, int &mini, int &max)
+void Character::GainExperience(int exp, int& mini, int& max)
 {
     Experience += exp;
     std::cout << exp << " 경험치를 획득했습니다.\n";
-    
+
     // 경험치가 최대 경험치를 초과할 경우 처리
     while (Experience >= MaxExperience) {
         int overflow = Experience - MaxExperience; // 초과된 경험치
         Experience = overflow; // 초과 경험치를 현재 경험치로 설정
-        LevelUp(mini,max); // 레벨업
+        LevelUp(mini, max); // 레벨업
     }
-    
+
     // 레벨업 후에 전체 경험치(MaxExperience) 갱신
     std::cout << "현재 경험치: " << Experience << " / " << MaxExperience << std::endl;
 }
@@ -98,10 +98,11 @@ void Character::ShowInventory()
 {
     std::cout << "\n==================================\n";
     std::cout << "인벤토리:\n";
-    if(Inventory.empty())
+    if (Inventory.empty())
     {
         std::cout << "인벤토리가 비어 있습니다.\n";
-    } else
+    }
+    else
     {
         sortInventory();
     }
@@ -112,21 +113,21 @@ void Character::ShowInventory()
 void Character::sortInventory()
 {
     // Inventory의 데이터를 벡터에 복사
-    std::vector<std::pair<std::string,std::unique_ptr<Item>>> sortedItems;
-    for(auto& pair : Inventory)
+    std::vector<std::pair<std::string, std::unique_ptr<Item>>> sortedItems;
+    for (auto& pair : Inventory)
     {
         // pair의 두 번째 요소인 unique_ptr을 이동하여 복사
-        sortedItems.push_back({pair.first,std::move(pair.second)});
+        sortedItems.push_back({ pair.first,std::move(pair.second) });
     }
 
     // 이름 기준으로 정렬
-    std::sort(sortedItems.begin(),sortedItems.end(),[](const auto& a,const auto& b) {
+    std::sort(sortedItems.begin(), sortedItems.end(), [](const auto& a, const auto& b) {
         return a.first < b.first;
-    });
+        });
 
     // 기존 Inventory를 클리어하고 정렬된 데이터를 삽입
     Inventory.clear();
-    for(auto& item : sortedItems)
+    for (auto& item : sortedItems)
     {
         Inventory[item.first] = std::move(item.second);  // 이동
     }
@@ -142,9 +143,10 @@ void Character::AddItem(std::unique_ptr<Item> item)
     const std::string& itemName = item->GetName();
 
     // 아이템 추가
-    if(Inventory.find(itemName) == Inventory.end()) {
+    if (Inventory.find(itemName) == Inventory.end()) {
         Inventory[itemName] = std::move(item);  // 새 아이템 추가
-    } else {
+    }
+    else {
         Inventory[itemName]->IncreaseAmount(item->GetAmount());  // 기존 아이템 수량 증가
     }
 
@@ -206,27 +208,29 @@ void Character::AutoUseItems()
     // 공격력 포션 사용
     auto attackBoostPotion = Inventory.find("공격력 포션");
     // 공격력 포션이 있고, 이미 사용한 적이 없는 경우만 허용
-    if(attackBoostPotion != Inventory.end() && AttackBoostAmount == 0) {
-        if(attackBoostPotion->second->GetAmount() > 0) {  // 포션 수량 확인
-            if(AttackBoostAmount == 0) {  // 아직 사용하지 않은 경우
+    if (attackBoostPotion != Inventory.end() && AttackBoostAmount == 0) {
+        if (attackBoostPotion->second->GetAmount() > 0) {  // 포션 수량 확인
+            if (AttackBoostAmount == 0) {  // 아직 사용하지 않은 경우
                 std::cout << "자동으로 공격력 포션을 사용합니다!\n";
                 attackBoostPotion->second->Use(this);  // 포션 사용
                 attackBoostPotion->second->DecreaseAmount(1);  // 포션 수량 감소
 
                 // 포션 수량 0일 시 인벤토리에서 제거
-                if(attackBoostPotion->second->GetAmount() == 0) {
+                if (attackBoostPotion->second->GetAmount() == 0) {
                     Inventory.erase(attackBoostPotion);
                 }
 
                 // 포션 사용 상태 기록 (AttackBoostAmount를 사용했음을 기록)
                 AttackBoostAmount = 1;  // 포션을 사용한 상태로 설정
-            } else {
+            }
+            else {
                 std::cout << "이미 공격력 포션을 사용하여 추가 사용이 불가능합니다!\n";
             }
-        } else {
+        }
+        else {
             std::cout << "공격력 포션이 없습니다!\n";  // 포션이 수량이 0일 때 메시지 출력
         }
-    } 
+    }
 }
 
 
@@ -234,37 +238,38 @@ void Character::AutoUseItems()
 void Character::ResetAttackBoost()
 {
     // 공격력 10만큼 감소 공격력 포션을 먹었을 때만 적용되게(효과 제거)
-    if(AttackBoostAmount == 1) 
+    if (AttackBoostAmount == 1)
     {
         Attack -= 10;
         std::cout << "전투가 끝났습니다. 공격력이 초기화되었습니다. 현재 공격력: " << Attack << "\n";
         AttackBoostAmount = 0;
     }
-    
-    
+
+
 }
 
 // 무기 장착
 bool Character::EquipWeapon(Equipment* weapon)
 {
     // 무기가 유효한지, Equipment 타입인지 체크
-    if(weapon && weapon->GetEquimentType() == Equipment::EquipmentType::Weapon)
+    if (weapon && weapon->GetEquimentType() == Equipment::EquipmentType::Weapon)
     {
         // 기존 무기 해제 처리
-        if(EquippedWeapon != nullptr)
+        if (EquippedWeapon != nullptr)
         {
             // 기존 무기와 새 무기의 보너스 스탯을 비교하여, 새로운 무기가 더 나은 경우에만 교체
-            if(weapon->GetBonusStat() > EquippedWeapon->GetBonusStat())
+            if (weapon->GetBonusStat() > EquippedWeapon->GetBonusStat())
             {
                 Attack -= EquippedWeapon->GetBonusStat();  // 기존 무기 효과 제거
                 std::cout << "기존 무기 " << EquippedWeapon->GetName() << "의 효과가 제거되었습니다.\n";
 
                 // 기존 무기를 인벤토리에 다시 추가
                 auto it = Inventory.find(EquippedWeapon->GetName());
-                if(it == Inventory.end()) {
+                if (it == Inventory.end()) {
                     Inventory[EquippedWeapon->GetName()] = std::make_unique<Equipment>(*EquippedWeapon);
                 }
-            } else
+            }
+            else
             {
                 std::cout << "현재 무기가 더 좋습니다. 장비를 교체하지 않습니다.\n";
                 return false;  // 새 무기가 기존 무기보다 나쁘므로 장착하지 않음
@@ -277,7 +282,8 @@ bool Character::EquipWeapon(Equipment* weapon)
         std::cout << weapon->GetName() << " 무기가 장착되었습니다. 현재 공격력: " << Attack << "\n";
 
         return true;  // 장착 성공
-    } else
+    }
+    else
     {
         std::cout << "장착할 수 있는 무기가 아닙니다.\n";
         return false;  // 장착 실패
@@ -288,24 +294,25 @@ bool Character::EquipWeapon(Equipment* weapon)
 bool Character::EquipArmor(Equipment* armor)
 {
     // 방어구가 유효한지, Equipment 타입인지 체크
-    if(armor && armor->GetEquimentType() == Equipment::EquipmentType::Armor)
+    if (armor && armor->GetEquimentType() == Equipment::EquipmentType::Armor)
     {
         // 기존 방어구 해제 처리
-        if(EquippedArmor != nullptr)
+        if (EquippedArmor != nullptr)
         {
             // 기존 방어구와 새 방어구의 보너스 스탯을 비교하여, 새로운 방어구가 더 나은 경우에만 교체
-            if(armor->GetBonusStat() > EquippedArmor->GetBonusStat())
+            if (armor->GetBonusStat() > EquippedArmor->GetBonusStat())
             {
                 Defense -= EquippedArmor->GetBonusStat();  // 기존 방어구 효과 제거
                 std::cout << "기존 방어구 " << EquippedArmor->GetName() << "의 효과가 제거되었습니다.\n";
 
                 // 기존 방어구를 인벤토리에 다시 추가
                 auto it = Inventory.find(EquippedArmor->GetName());
-                if(it == Inventory.end())
+                if (it == Inventory.end())
                 {
                     Inventory[EquippedArmor->GetName()] = std::make_unique<Equipment>(*EquippedArmor);
                 }
-            } else
+            }
+            else
             {
                 std::cout << "현재 방어구가 더 좋습니다. 장비를 교체하지 않습니다.\n";
                 return false;  // 새 방어구가 기존 방어구보다 나쁘므로 장착하지 않음
@@ -318,7 +325,8 @@ bool Character::EquipArmor(Equipment* armor)
         std::cout << armor->GetName() << " 방어구가 장착되었습니다. 현재 방어력: " << Defense << "\n";
 
         return true;  // 장착 성공
-    } else
+    }
+    else
     {
         std::cout << "장착할 수 있는 방어구가 아닙니다.\n";
         return false;  // 장착 실패
