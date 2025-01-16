@@ -9,7 +9,7 @@ using namespace std;
 
 
 Character::Character(const std::string& name)
-    : Name(name), Level(1), Health(100), MaxHealth(100), Attack(10), Experience(0), Gold(100), AttackBoostAmount(0), Defense(0), MaxExperience(100) {
+    : Name(name), Level(1), Health(100), MaxHealth(100), Attack(10), Experience(0), Gold(7500), AttackBoostAmount(0), Defense(0), MaxExperience(100) {
 }
 
 // 레벨업 기능
@@ -45,19 +45,7 @@ void Character::GainExperience(int exp, int &mini, int &max)
 }
 
 
-// 데미지 받기
-void Character::TakeDamage(int damage)
-{
-    int effectiveDamage = (damage > AttackBoostAmount) ? (damage - AttackBoostAmount) : 0;
-    Health -= effectiveDamage;
-    if (Health < 0) Health = 0;
-    std::cout << Name << "이(가) " << effectiveDamage << " 피해를 입었습니다.\n";
-    AutoUseItems();
-    if (Health <= 0)
-    {
-        std::cout << "당신은 패배했습니다.\n";
-    }
-}
+
 
 // 상태창 출력
 void Character::DisplayStatus() const {
@@ -106,7 +94,7 @@ void Character::VisitShop(Shop* shop)
     } while (choice != 3);
 }
 
-void Character::ShowInventory() 
+void Character::ShowInventory()
 {
     std::cout << "\n==================================\n";
     std::cout << "인벤토리:\n";
@@ -115,7 +103,25 @@ void Character::ShowInventory()
         std::cout << "인벤토리가 비어 있습니다.\n";
     } else
     {
-        sortInventory();
+        // unordered_map을 vector로 복사하고 정렬
+        std::vector<std::pair<std::string,std::unique_ptr<Item>>> sortedItems;
+        for(auto& item : Inventory)
+        {
+            sortedItems.push_back(std::make_pair(item.first,std::move(item.second)));
+        }
+
+        // 이름 기준으로 정렬
+        std::sort(sortedItems.begin(),sortedItems.end(),[](const auto& a,const auto& b) {
+            return a.first < b.first;
+        });
+
+        // 정렬된 아이템 출력
+        int idx = 1;
+        for(const auto& item : sortedItems)
+        {
+            std::cout << idx << ". " << item.first << ": " << item.second->GetAmount() << " 개\n";
+            ++idx;
+        }
     }
 }
 

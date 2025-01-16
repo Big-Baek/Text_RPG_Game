@@ -337,7 +337,7 @@ void GameManager::VisitShop(Character* player,Shop* shop,GameManager* gameManage
                 player->AddItem(std::make_unique<HealthPotion>("체력 포션",20,1));
             }
             player->Gold -= 20;
-            std::cout << "체력 포션을 구매했습니다.\n";
+            std::cout << "체력 포션을 구매했습니다. 20골드를 사용 했습니다. 남은 골드는"<< player -> Gold<<" 골드 입니다.\n";
         } else
         {
             std::cout << "골드가 부족합니다.\n";
@@ -358,7 +358,7 @@ void GameManager::VisitShop(Character* player,Shop* shop,GameManager* gameManage
                 player->AddItem(std::make_unique<AttackBoost>("공격력 포션",50,1));
             }
             player->Gold -= 50;
-            std::cout << "공격력 포션을 구매했습니다.\n";
+            std::cout << "공격력 포션을 구매했습니다. 50 골드를 사용했습니다 남은 골드는 "<< player -> Gold<<" 골드 입니다\n";
         } else
         {
             std::cout << "골드가 부족합니다.\n";
@@ -380,7 +380,7 @@ void GameManager::VisitShop(Character* player,Shop* shop,GameManager* gameManage
                         player->AddItem(std::make_unique<RevivePotion>("부활 포션", 100, 1));
                     }
                     player->Gold -= 100;
-                    std::cout << "부활 포션을 구매했습니다.\n";
+                    std::cout << "부활 포션을 구매했습니다. 100골드를 사용했습니다. 남은 골드는 "<< player -> Gold<<" 골드 입니다.\n";
                 }
                 else
                 {
@@ -438,16 +438,16 @@ void GameManager::VisitShop(Character* player,Shop* shop,GameManager* gameManage
         gameManager->PurchaseEquipment(player,"철갑옷",500,20,Equipment::EquipmentType::Armor);
         break;
         case 7:  // 미스릴 창 (무기)
-        gameManager->PurchaseEquipment(player,"미스릴 창",700,30,Equipment::EquipmentType::Weapon);
+        gameManager->PurchaseEquipment(player,"미스릴 창",1000,30,Equipment::EquipmentType::Weapon);
         break;
         case 8:  // 드래곤 비늘갑옷 (방어구)
-        gameManager->PurchaseEquipment(player,"미스릴 갑옷",700,30,Equipment::EquipmentType::Armor);
+        gameManager->PurchaseEquipment(player,"미스릴 갑옷",1000,30,Equipment::EquipmentType::Armor);
         break;
         case 9:  // 드래곤 슬레이어 (무기)
-        gameManager->PurchaseEquipment(player,"드래곤 슬레이어",1000,50,Equipment::EquipmentType::Weapon);
+        gameManager->PurchaseEquipment(player,"드래곤 슬레이어",2000,50,Equipment::EquipmentType::Weapon);
         break;
         case 0:  // 드래곤 비늘갑옷 (방어구)
-        gameManager->PurchaseEquipment(player,"드래곤 비늘갑옷",1000,50,Equipment::EquipmentType::Armor);
+        gameManager->PurchaseEquipment(player,"드래곤 비늘갑옷",2000,50,Equipment::EquipmentType::Armor);
         break;
         case 99:  // 뒤로가기
         std::cout << "상점으로 돌아갑니다.\n";
@@ -481,6 +481,7 @@ void GameManager::VisitShop(Character* player,Shop* shop,GameManager* gameManage
 
     // 선택한 아이템을 찾기 (sellChoice가 유효한 경우에만)
     auto itemToSell = std::next(player->Inventory.begin(), sellChoice - 1);  // sellChoice - 1로 실제 아이템 위치 찾기
+    
     if (itemToSell == player->Inventory.end()) {
         std::cout << "해당 아이템이 인벤토리에 없습니다.\n";
         break;
@@ -581,8 +582,10 @@ void GameManager::PurchaseEquipment(Character* player,const std::string& itemNam
 {
     if(player->Gold >= price) {
         // 골드 차감
+        int goldRemain = player->Gold - price;
         player->Gold -= price;
-
+        
+        std::cout << itemName << " 구매 완료! "<< price <<" 골드 사용함 남은 골드 : " << goldRemain <<"\n";
         // 장비 생성
         std::unique_ptr<Equipment> purchasedItem = std::make_unique<Equipment>(itemName,price,bonusStat,type);
 
@@ -598,7 +601,7 @@ void GameManager::PurchaseEquipment(Character* player,const std::string& itemNam
         // 장비 인벤토리에 추가
         player->AddItem(std::move(purchasedItem));
 
-        std::cout << itemName << " 구매 완료!\n";
+        
     } else {
         std::cout << "골드가 부족합니다.\n";
     }
