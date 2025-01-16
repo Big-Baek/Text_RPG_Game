@@ -9,7 +9,7 @@
 class TrollClaw : public Item
 {
 public:
-    TrollClaw() : Item("트롤의 발톱", 30) {}
+    TrollClaw() : Item("트롤의 발톱", 75) {}
 
     std::string GetName() const override
     {
@@ -28,7 +28,7 @@ public:
 
     Equipment* GetType() const override
     {
-        static Equipment temp("트롤의 발톱", 30, 0, Equipment::EquipmentType::Misc);
+        static Equipment temp("트롤의 발톱", 75, 0, Equipment::EquipmentType::Misc);
         return &temp;
     }
 };

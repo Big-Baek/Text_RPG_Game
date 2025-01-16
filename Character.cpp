@@ -4,6 +4,7 @@
 #include "RevivePotion.h"
 #include <iostream>
 #include "AttackBoost.h"
+#include <algorithm>
 using namespace std;
 
 
@@ -123,19 +124,47 @@ void Character::ShowInventory() const
     }
 }
 
+// Inventory 정렬 함수
+void Character::sortInventory()
+{
+    // 정렬된 아이템을 담을 벡터 생성
+    std::vector<std::pair<std::string,std::unique_ptr<Item>>> sortedItems;
+
+    // Inventory의 데이터를 벡터에 복사
+    for(auto& pair : Inventory)
+    {
+        sortedItems.push_back(std::move(pair));  // 이동
+    }
+
+    // 이름 기준으로 정렬
+    std::sort(sortedItems.begin(),sortedItems.end(),[](const auto& a,const auto& b) {
+        return a.first < b.first;
+    });
+
+    // 기존 Inventory를 클리어하고 정렬된 데이터를 삽입
+    Inventory.clear();
+    for(auto& item : sortedItems)
+    {
+        Inventory[item.first] = std::move(item.second);  // 이동
+    }
+}
+
 // 아이템 추가
 void Character::AddItem(std::unique_ptr<Item> item)
 {
     const std::string& itemName = item->GetName();
-    if (Inventory.find(itemName) == Inventory.end())
-    {
+
+    // 아이템 추가
+    if(Inventory.find(itemName) == Inventory.end()) {
         Inventory[itemName] = std::move(item);  // 새 아이템 추가
-    }
-    else
-    {
+    } else {
         Inventory[itemName]->IncreaseAmount(item->GetAmount());  // 기존 아이템 수량 증가
     }
+
+    // 인벤토리 정렬
+    sortInventory();
 }
+
 
 // 상점에서 아이템 판매
 void Character::SellItemAtShop(Shop* shop)
@@ -307,7 +336,7 @@ bool Character::EquipArmor(Equipment* armor)
         std::cout << "장착할 수 있는 방어구가 아닙니다.\n";
         return false;  // 장착 실패
     }
-}
 
+};
 
 

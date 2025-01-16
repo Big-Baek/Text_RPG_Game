@@ -89,7 +89,7 @@ void GameManager::StartGame(Character* player, Shop* shop)
         }
         else if (choice == 3)
         {
-            DisplayInventory(player);
+            DisplayInventory(player, shop);
         }
         else if (choice == 4)
         {
@@ -457,35 +457,33 @@ void GameManager::VisitShop(Character* player,Shop* shop,GameManager* gameManage
         break;
         case 3:  // 아이템 판매
         {
-            if (player->Inventory.empty()) {
+            if(player->Inventory.empty()) {
                 std::cout << "인벤토리가 비어 있습니다.\n";
                 break;
             }
             std::cout << "\n=============================\n";
             std::cout << "판매할 아이템을 선택하세요.\n\n";
             std::cout << "현재 보유한 아이템 목록:\n";
-            index = 1;
+            int index = 1;
 
             // 아이템 목록 출력
-            for (const auto& item : player->Inventory) {
-                std::cout << index++ << ". " << item.first << ": " << item.second->GetAmount() << " 개\n";
-            }
+            DisplayInventory(player,shop);
 
             std::cout << "판매할 아이템 번호를 입력하세요: ";
             int sellChoice;
             std::cin >> sellChoice;
 
             // 범위 검사 먼저 수행
-            if (sellChoice < 1 || sellChoice >= index) {
+            if(sellChoice < 1 || sellChoice > player->Inventory.size()) {  // 최대 범위 수정
                 std::cout << "잘못된 번호입니다.\n";
                 break;
             }
 
             // 선택한 아이템을 찾기 (sellChoice가 유효한 경우에만)
-            auto itemToSell = std::next(player->Inventory.begin(), sellChoice - 1);
-            if (itemToSell == player->Inventory.end()) {
+            auto itemToSell = std::next(player->Inventory.begin(),sellChoice - 1);  // sellChoice - 1로 실제 아이템 위치 찾기
+            if(itemToSell == player->Inventory.end()) {
                 std::cout << "해당 아이템이 인벤토리에 없습니다.\n";
-                return;
+                break;
             }
 
             // 선택한 아이템 수량 확인
@@ -496,35 +494,33 @@ void GameManager::VisitShop(Character* player,Shop* shop,GameManager* gameManage
             Equipment* equipment = itemToSell->second->GetType();
 
             // EquipmentType 확인
-            if (equipment) {
+            if(equipment) {
                 // EquipmentType을 가져와서 비교
-                if (equipment->GetTypeText() == "Consumable" ||
+                if(equipment->GetTypeText() == "Consumable" ||
                     equipment->GetTypeText() == "Weapon" ||
                     equipment->GetTypeText() == "Armor") {
                     totalPrice = static_cast<int>(totalPrice * 0.6);  //상점 구매 항목은 60% 가격으로 판매
                 }
             }
 
-
-            if (itemAmount > 1) {
+            if(itemAmount > 1) {
                 // 수량이 2개 이상일 경우 일괄 판매 여부 확인
                 std::cout << itemToSell->first << "이(가) " << itemAmount << "개 있습니다. 일괄 판매하시겠습니까? (Y/N): ";
                 char bulkSellChoice;
                 std::cin >> bulkSellChoice;
 
-                if (bulkSellChoice == 'Y' || bulkSellChoice == 'y') {
+                if(bulkSellChoice == 'Y' || bulkSellChoice == 'y') {
                     int bulkTotalPrice = totalPrice * itemAmount;  // 총 가격 계산
                     player->Gold += bulkTotalPrice;
                     std::cout << itemToSell->first << " " << itemAmount << "개를 판매했습니다. 총 " << bulkTotalPrice << " 골드가 추가되었습니다.\n";
 
                     // 아이템 삭제 (반복자 무효화됨)
                     player->Inventory.erase(itemToSell);
-                }
-                else {
-                    std::cout << itemToSell->first << " 1개를 판매 하시겠습니까?";
+                } else {
+                    std::cout << itemToSell->first << " 1개를 판매 하시겠습니까? (Y/N)";
                     char sellChoice;
                     std::cin >> sellChoice;
-                    if (sellChoice == 'Y' || sellChoice == 'y') {
+                    if(sellChoice == 'Y' || sellChoice == 'y') {
                         player->Gold += totalPrice;
 
                         // 반복자 사용 후 삭제
@@ -533,47 +529,34 @@ void GameManager::VisitShop(Character* player,Shop* shop,GameManager* gameManage
 
                         // 아이템 삭제 (반복자 무효화됨)
                         player->Inventory.erase(itemToSell);
-                    }
-                    else {
+                    } else {
                         std::cout << "판매를 진행하지 않습니다. 전 메뉴로 돌아갑니다.\n";
-                        return;
+                        break;
                     }
                 }
-            }
-            else {
+            } else {
                 // 수량이 1개일 경우 판매 여부 확인
                 std::cout << itemToSell->first << "이(가) " << itemAmount << "개 있습니다. 판매하시겠습니까? (Y/N): ";
                 char sellChoice;
                 std::cin >> sellChoice;
-                if (sellChoice == 'Y' || sellChoice == 'y') {
+                if(sellChoice == 'Y' || sellChoice == 'y') {
                     player->Gold += totalPrice;
                     std::cout << itemToSell->first << " 1개를 판매했습니다. 총 "
                         << totalPrice << " 골드가 추가되었습니다.\n";
 
                     // 아이템 삭제 (반복자 무효화됨)
                     player->Inventory.erase(itemToSell);
-                }
-                else {
+                } else {
                     std::cout << "판매를 진행하지 않습니다. 전 메뉴로 돌아갑니다.\n";
-                    return;
+                    break;
                 }
             }
 
             break;
         }
-        case 4:  // 아이템 목록 확인
-            std::cout << "\n===========================\n";
-            std::cout << "현재 보유한 아이템 목록:\n";
 
-            if (player->Inventory.empty()) {
-                std::cout << "인벤토리가 비어 있습니다.\n";
-            }
-            else {
-                int index = 1;
-                for (const auto& item : player->Inventory) {
-                    std::cout << index++ << ". " << item.first << ": " << item.second->GetAmount() << " 개\n";
-                }
-            }
+        case 4:  // 아이템 목록 확인
+            DisplayInventory(player, shop);
             std::cout << "===========================\n";
             break;
 
@@ -617,12 +600,38 @@ void GameManager::PurchaseEquipment(Character* player,const std::string& itemNam
     }
 }
 
-void GameManager::DisplayInventory(Character* player)
+void GameManager::DisplayInventory(Character* player,Shop* shop)
 {
-    cout << "\n==================================\n";
+    std::cout << "\n==================================\n";
     std::cout << "\n인벤토리:\n";
-    for (const auto& item : player->Inventory)
+
+    // 원본 요소를 참조하는 벡터 (원본 요소에 대한 포인터)
+    std::vector<std::reference_wrapper<const std::pair<const std::string,std::unique_ptr<Item>>>> sortedItems(
+        player->Inventory.begin(),player->Inventory.end());
+
+    // 아이템 이름으로 정렬
+    std::sort(sortedItems.begin(),sortedItems.end(),[](const auto& a,const auto& b) {
+        return a.get().second->GetName() < b.get().second->GetName();
+    });
+    // 정렬된 인벤토리와 아이템 설명 출력
+    int index = 1;  // 번호 매기기 시작
+    // 정렬된 인벤토리와 아이템 설명 출력
+    for(const auto& item : sortedItems)
     {
-        std::cout << item.first << ": " << item.second->GetName() << " (" << item.second->GetAmount() << " 개)\n";
+        std::cout << index << ". "  // 번호 출력
+            << item.get().first << ": "
+            << " (" << item.get().second->GetAmount() << " 개)";
+
+        // 상점에서 설명 가져오기
+        auto it = shop->ItemDescriptions.find(item.get().first);
+        if(it != shop->ItemDescriptions.end()) {
+            std::cout << " - " << it->second;  // 상점에서 아이템 설명 출력
+        }
+
+        std::cout << "\n";
+        index++;
     }
 }
+
+
+

@@ -7,7 +7,7 @@
 class GoblinSpear : public Item
 {
 public:
-    GoblinSpear() : Item("고블린의 창", 20) {}
+    GoblinSpear() : Item("고블린의 창", 30) {}
 
     std::string GetName() const override
     {
@@ -26,7 +26,7 @@ public:
 
     Equipment* GetType() const override
     {
-        static Equipment temp("고블린의 창", 20, 0, Equipment::EquipmentType::Misc);
+        static Equipment temp("고블린의 창", 30, 0, Equipment::EquipmentType::Misc);
         return &temp;
     }
 };

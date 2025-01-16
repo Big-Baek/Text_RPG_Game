@@ -8,7 +8,7 @@
 class SlimeFluid : public Item
 {
 public:
-    SlimeFluid() : Item("슬라임 체액", 15) {}
+    SlimeFluid() : Item("슬라임 체액", 20) {}
 
     std::string GetName() const override
     {
@@ -26,7 +26,7 @@ public:
 
     Equipment* GetType() const override
     {
-        static Equipment temp("슬라임 체액", 15, 0, Equipment::EquipmentType::Misc);
+        static Equipment temp("슬라임 체액", 20, 0, Equipment::EquipmentType::Misc);
         return &temp;
     }
 };
