@@ -9,7 +9,7 @@ using namespace std;
 
 
 Character::Character(const std::string& name)
-    : Name(name), Level(1), Health(100), MaxHealth(100), Attack(10), Experience(0), Gold(7500), AttackBoostAmount(0), Defense(0), MaxExperience(100) {
+    : Name(name), Level(1), Health(100), MaxHealth(100), Attack(10), Experience(0), Gold(100), AttackBoostAmount(0), Defense(0), MaxExperience(100) {
 }
 
 // 레벨업 기능
