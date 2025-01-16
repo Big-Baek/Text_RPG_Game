@@ -7,7 +7,7 @@
 class GoblinSpear : public Item
 {
 public:
-    GoblinSpear() : Item("고블린의 창", 20) {}
+    GoblinSpear() : Item("고블린의 창", 30) {}
 
     std::string GetName() const override
     {
@@ -21,12 +21,12 @@ public:
 
     int GetPrice() const override
     {
-        return 20;  // 고블린의 창 가격
+        return 60;  // 고블린의 창 가격
     }
 
     Equipment* GetType() const override
     {
-        static Equipment temp("고블린의 창", 20, 0, Equipment::EquipmentType::Misc);
+        static Equipment temp("고블린의 창", 30, 0, Equipment::EquipmentType::Misc);
         return &temp;
     }
 };
@@ -39,6 +39,7 @@ Goblin::Goblin(int level)
     Health = MaxHealth;
     Attack = 8 + (level * 3);
     Defense = 3 + (level * 2);
+    Experience = 100 + (level * 5);
     InitializeLootTable();
 }
 

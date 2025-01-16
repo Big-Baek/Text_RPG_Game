@@ -4,10 +4,12 @@
 #include <iostream>
 #include <random>
 
+
+//의현: 나는 개트롤이다
 class TrollClaw : public Item
 {
 public:
-    TrollClaw() : Item("트롤의 발톱", 30) {}
+    TrollClaw() : Item("트롤의 발톱", 75) {}
 
     std::string GetName() const override
     {
@@ -21,12 +23,12 @@ public:
 
     int GetPrice() const override
     {
-        return 30;  // 트롤의 발톱 가격
+        return 90;  // 트롤의 발톱 가격
     }
 
     Equipment* GetType() const override
     {
-        static Equipment temp("트롤의 발톱", 30, 0, Equipment::EquipmentType::Misc);
+        static Equipment temp("트롤의 발톱", 75, 0, Equipment::EquipmentType::Misc);
         return &temp;
     }
 };
@@ -38,6 +40,7 @@ Troll::Troll(int level)
     Health = MaxHealth;
     Attack = 10 + (level * 4);
     Defense = 5 + (level * 3);
+    Experience = 110 + (level * 5);
     InitializeLootTable();
 }
 

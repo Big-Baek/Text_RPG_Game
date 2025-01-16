@@ -8,7 +8,7 @@ class Shop
 {
 private:
     std::vector<std::unique_ptr<Item>> AvailableItems;
-    std::unordered_map<std::string, std::string> ItemDescriptions;
+    
 
 public:
     Shop();
@@ -19,5 +19,7 @@ public:
     // 아이템 구매
     void BuyItem(int index, Character* player);
     // 아이템 판매
-    void SellItem(const std::string& itemName, Character* player);
+    void SellItem(const std::string& itemName,Character* player);
+    std::unordered_map<std::string,std::string> ItemDescriptions;
+
 };

@@ -8,7 +8,7 @@
 class SlimeFluid : public Item
 {
 public:
-    SlimeFluid() : Item("슬라임 체액", 15) {}
+    SlimeFluid() : Item("슬라임 체액", 20) {}
 
     std::string GetName() const override
     {
@@ -21,12 +21,12 @@ public:
     }
 
     int GetPrice() const override {
-        return 15;  // 슬라임 체액 가격
+        return 45;  // 슬라임 체액 가격
     }
 
     Equipment* GetType() const override
     {
-        static Equipment temp("슬라임 체액", 15, 0, Equipment::EquipmentType::Misc);
+        static Equipment temp("슬라임 체액", 20, 0, Equipment::EquipmentType::Misc);
         return &temp;
     }
 };
@@ -40,6 +40,7 @@ Slime::Slime(int level) : Monster(level)
     Health = MaxHealth;
     Attack = 5 + (level * 2);
     Defense = 2 + (level * 2);
+    Experience = 95 + (level * 5);
     InitializeLootTable();
 }
 

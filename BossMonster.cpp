@@ -38,9 +38,10 @@ BossMonster::BossMonster(int level)
     : Monster(level)
 {
     Name = "마왕";
-    Health = 500 + (level * 50);
-    Attack = 50 + (level * 10);
-    Defense = 40 + (level * 5);
+    Health = 500;
+    MaxHealth = Health;
+    Attack = 50;
+    Defense = 40;
     InitializeLootTable();
 }
 
