@@ -224,6 +224,7 @@ void GameManager::BossBattle(Character* player)
         {
             // 플레이어의 공격
             int damageToBoss = std::max(0, player->Attack - boss->Defense); // 방어력 차감
+            std::cout << damageToBoss;
             boss->Health -= damageToBoss;
             boss->Health = max(0, boss->Health);  // 몬스터의 음수 체력 방지
             // 피해 계산 시 방어력만 고려 (EquippedArmor에 의한 추가 방어력은 이미 반영됨)
@@ -231,7 +232,8 @@ void GameManager::BossBattle(Character* player)
             cout << boss->Name << "체력: " << boss->Health << " / " << boss->MaxHealth << "\n";
 
             int damageToPlayer = std::max(0, boss->Attack - player->Defense); // 방어력 차감
-            player->Health -= boss->Attack;
+            std::cout << damageToPlayer;
+            player->Health -= damageToPlayer;
             player->Health = max(0, player->Health);  // 플레이어의 음수 체력 방지
             // 피해 계산 시 방어력만 고려 (EquippedArmor에 의한 추가 방어력은 이미 반영됨)
 
