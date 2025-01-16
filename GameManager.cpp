@@ -214,7 +214,7 @@ void GameManager::BossBattle(Character* player)
     std::cout << "보스 레벨: " << boss->Level << "\n";
     std::cout << "보스 체력: " << boss->Health << "\n";
     std::cout << "보스 공격력: " << boss->Attack << "\n";
-    std::cout << "보스 공격력: " << boss->Defense << "\n";
+    std::cout << "보스 방어력: " << boss->Defense << "\n";
     // 보스 몬스터가 존재하면 전투 시작
     if (boss != nullptr)
     {
