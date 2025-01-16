@@ -73,7 +73,7 @@ void GameManager::StartGame(Character* player, Shop* shop)
         if (choice == 1)
         {
             // 레벨 10 이상일 때 보스 몬스터와 전투
-            if (player->Level >= 10)
+            if (player->Level < 10)
             {
                 BossBattle(player);
                 break;  // 보스 전투 후 게임 종료
@@ -214,7 +214,7 @@ void GameManager::BossBattle(Character* player)
     std::cout << "보스 레벨: " << boss->Level << "\n";
     std::cout << "보스 체력: " << boss->Health << "\n";
     std::cout << "보스 공격력: " << boss->Attack << "\n";
-    std::cout << "보스 공격력: " << boss->Defense << "\n";
+    std::cout << "보스 방어력: " << boss->Defense << "\n";
     // 보스 몬스터가 존재하면 전투 시작
     if (boss != nullptr)
     {
