@@ -40,7 +40,7 @@ BossMonster::BossMonster(int level)
     Name = "마왕";
     Health = 500;
     MaxHealth = Health;
-    Attack = 50;
+    Attack = 70;
     Defense = 40;
     InitializeLootTable();
 }

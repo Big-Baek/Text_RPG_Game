@@ -147,7 +147,6 @@ void GameManager::Battle(Character* player)
             turn++;
             // 플레이어의 공격
             int damageToMonster = std::max(0, player->Attack - monster->Defense); // 방어력 차감
-            cout << damageToMonster << "만큼의 피해를 입혔습니다.\n";
             monster->Health -= damageToMonster;
             monster->Health = max(0, monster->Health);  // 몬스터의 음수 체력 방지
             // 피해 계산 시 방어력만 고려 (EquippedArmor에 의한 추가 방어력은 이미 반영됨)
@@ -224,7 +223,6 @@ void GameManager::BossBattle(Character* player)
         {
             // 플레이어의 공격
             int damageToBoss = std::max(0, player->Attack - boss->Defense); // 방어력 차감
-            std::cout << damageToBoss;
             boss->Health -= damageToBoss;
             boss->Health = max(0, boss->Health);  // 몬스터의 음수 체력 방지
             // 피해 계산 시 방어력만 고려 (EquippedArmor에 의한 추가 방어력은 이미 반영됨)
@@ -232,7 +230,6 @@ void GameManager::BossBattle(Character* player)
             cout << boss->Name << "체력: " << boss->Health << " / " << boss->MaxHealth << "\n";
 
             int damageToPlayer = std::max(0, boss->Attack - player->Defense); // 방어력 차감
-            std::cout << damageToPlayer;
             player->Health -= damageToPlayer;
             player->Health = max(0, player->Health);  // 플레이어의 음수 체력 방지
             // 피해 계산 시 방어력만 고려 (EquippedArmor에 의한 추가 방어력은 이미 반영됨)
@@ -470,7 +467,7 @@ void GameManager::VisitShop(Character* player,Shop* shop,GameManager* gameManage
 
     // 아이템 목록 출력
     DisplayInventory(player, shop);
-
+    std::cout << "\n=============================\n";
     std::cout << "판매할 아이템 번호를 입력하세요: ";
     int sellChoice;
     std::cin >> sellChoice;
@@ -627,7 +624,7 @@ void GameManager::DisplayInventory(Character* player,Shop* shop)
         if(it != shop->ItemDescriptions.end()) {
             std::cout << " - " << it->second;  // 상점에서 아이템 설명 출력
         }
-
+        
         std::cout << "\n";
         index++;
     }
