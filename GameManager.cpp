@@ -612,25 +612,16 @@ void GameManager::DisplayInventory(Character* player,Shop* shop)
     std::cout << "\n==================================\n";
     std::cout << "\n인벤토리:\n";
 
-    // 원본 요소를 참조하는 벡터 (원본 요소에 대한 포인터)
-    std::vector<std::reference_wrapper<const std::pair<const std::string,std::unique_ptr<Item>>>> sortedItems(
-        player->Inventory.begin(),player->Inventory.end());
-
-    // 아이템 이름으로 정렬
-    std::sort(sortedItems.begin(),sortedItems.end(),[](const auto& a,const auto& b) {
-        return a.get().second->GetName() < b.get().second->GetName();
-    });
-    // 정렬된 인벤토리와 아이템 설명 출력
-    int index = 1;  // 번호 매기기 시작
-    // 정렬된 인벤토리와 아이템 설명 출력
-    for(const auto& item : sortedItems)
+    // 정렬된 인벤토리를 참조
+    int index = 1;
+    for(const auto& item : player->Inventory)
     {
         std::cout << index << ". "  // 번호 출력
-            << item.get().first << ": "
-            << " (" << item.get().second->GetAmount() << " 개)";
+            << item.first << ": "
+            << " (" << item.second->GetAmount() << " 개)";
 
         // 상점에서 설명 가져오기
-        auto it = shop->ItemDescriptions.find(item.get().first);
+        auto it = shop->ItemDescriptions.find(item.first);
         if(it != shop->ItemDescriptions.end()) {
             std::cout << " - " << it->second;  // 상점에서 아이템 설명 출력
         }
@@ -639,6 +630,7 @@ void GameManager::DisplayInventory(Character* player,Shop* shop)
         index++;
     }
 }
+
 
 
 

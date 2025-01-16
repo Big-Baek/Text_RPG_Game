@@ -103,25 +103,7 @@ void Character::ShowInventory()
         std::cout << "인벤토리가 비어 있습니다.\n";
     } else
     {
-        // unordered_map을 vector로 복사하고 정렬
-        std::vector<std::pair<std::string,std::unique_ptr<Item>>> sortedItems;
-        for(auto& item : Inventory)
-        {
-            sortedItems.push_back(std::make_pair(item.first,std::move(item.second)));
-        }
-
-        // 이름 기준으로 정렬
-        std::sort(sortedItems.begin(),sortedItems.end(),[](const auto& a,const auto& b) {
-            return a.first < b.first;
-        });
-
-        // 정렬된 아이템 출력
-        int idx = 1;
-        for(const auto& item : sortedItems)
-        {
-            std::cout << idx << ". " << item.first << ": " << item.second->GetAmount() << " 개\n";
-            ++idx;
-        }
+        sortInventory();
     }
 }
 
@@ -133,7 +115,8 @@ void Character::sortInventory()
     std::vector<std::pair<std::string,std::unique_ptr<Item>>> sortedItems;
     for(auto& pair : Inventory)
     {
-        sortedItems.push_back(std::move(pair));  // 이동
+        // pair의 두 번째 요소인 unique_ptr을 이동하여 복사
+        sortedItems.push_back({pair.first,std::move(pair.second)});
     }
 
     // 이름 기준으로 정렬
@@ -148,6 +131,9 @@ void Character::sortInventory()
         Inventory[item.first] = std::move(item.second);  // 이동
     }
 }
+
+
+
 
 
 // 아이템 추가
