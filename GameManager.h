@@ -35,7 +35,7 @@ public:
     void PurchaseEquipment(Character* player, const std::string& itemName, int price, int bonusStat, Equipment::EquipmentType type);
 
     // 인벤토리 확인 함수
-    static void DisplayInventory(Character* player);
+    static void DisplayInventory(Character* player, Shop* shop);
 
     // 보스 몬스터 전투 처리 함수
     void BossBattle(Character* player);

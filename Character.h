@@ -45,6 +45,8 @@ public:
     // 인벤토리 표시
     void ShowInventory() const;
 
+    void sortInventory();
+
     // 아이템 추가 메소드
     void AddItem(std::unique_ptr<Item> item);
 

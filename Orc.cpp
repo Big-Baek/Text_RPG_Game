@@ -7,7 +7,7 @@
 class OrcAxe : public Item
 {
 public:
-    OrcAxe() : Item("오크의 도끼", 25) {}
+    OrcAxe() : Item("오크의 도끼", 150) {}
 
     std::string GetName() const override
     {
@@ -26,7 +26,7 @@ public:
 
     Equipment* GetType() const override
     {
-        static Equipment temp("오크의 도끼", 25, 0, Equipment::EquipmentType::Misc);
+        static Equipment temp("오크의 도끼", 50, 0, Equipment::EquipmentType::Misc);
         return &temp;
     }
 };
