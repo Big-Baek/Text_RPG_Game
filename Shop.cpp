@@ -19,10 +19,10 @@ Shop::Shop()
     AvailableItems.emplace_back(std::make_unique<Equipment>("구리갑옷", 200, 10, Equipment::EquipmentType::Armor));
     AvailableItems.emplace_back(std::make_unique<Equipment>("철검",300,20,Equipment::EquipmentType::Weapon));
     AvailableItems.emplace_back(std::make_unique<Equipment>("철갑옷",300,20,Equipment::EquipmentType::Armor));
-    AvailableItems.emplace_back(std::make_unique<Equipment>("미스릴 검",500,35,Equipment::EquipmentType::Weapon));
-    AvailableItems.emplace_back(std::make_unique<Equipment>("미스릴 갑옷",500,35,Equipment::EquipmentType::Armor));
-    AvailableItems.emplace_back(std::make_unique<Equipment>("드래곤 슬레이어",1000,50,Equipment::EquipmentType::Weapon));
-    AvailableItems.emplace_back(std::make_unique<Equipment>("드래곤 비늘갑옷",1000,50,Equipment::EquipmentType::Armor));
+    AvailableItems.emplace_back(std::make_unique<Equipment>("미스릴 창",1000,35,Equipment::EquipmentType::Weapon));
+    AvailableItems.emplace_back(std::make_unique<Equipment>("미스릴 갑옷",1000,35,Equipment::EquipmentType::Armor));
+    AvailableItems.emplace_back(std::make_unique<Equipment>("드래곤 슬레이어",2000,50,Equipment::EquipmentType::Weapon));
+    AvailableItems.emplace_back(std::make_unique<Equipment>("드래곤 비늘갑옷",2000,50,Equipment::EquipmentType::Armor));
    
     ItemDescriptions["체력 포션"] = "체력을 50 회복합니다.";
     ItemDescriptions["공격력 포션"] = "공격력을 일시적으로 한번의 전투동안 10 증가시킵니다.";
@@ -33,8 +33,8 @@ Shop::Shop()
     ItemDescriptions["구리갑옷"] = "방어력을 7 증가시키는 방어구.";
     ItemDescriptions["철검"] = "공격력을 20 증가시키는 무기.";
     ItemDescriptions["철갑옷"] = "방어력을 20 증가시키는 방어구.";
-    ItemDescriptions["미스릴 검"] = "공격력을 20 증가시키는 무기.";
-    ItemDescriptions["미스릴 갑옷"] = "방어력을 20 증가시키는 방어구.";
+    ItemDescriptions["미스릴 창"] = "공격력을 35 증가시키는 무기.";
+    ItemDescriptions["미스릴 갑옷"] = "방어력을 35 증가시키는 방어구.";
     ItemDescriptions["드래곤 슬레이어"] = "공격력을 50 증가시키는 무기.";
     ItemDescriptions["드래곤 비늘갑옷"] = "방어력을 50 증가시키는 방어구.";
     ItemDescriptions["고블린의 창"] = "고블린이 사용 하던 창 수집가들이 간혹 찾아서 상점에서 싼 가격에 매입된다.";

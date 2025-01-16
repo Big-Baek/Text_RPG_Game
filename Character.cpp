@@ -106,31 +106,25 @@ void Character::VisitShop(Shop* shop)
     } while (choice != 3);
 }
 
-// 인벤토리 표시
-void Character::ShowInventory() const
+void Character::ShowInventory() 
 {
-    cout << "\n==================================\n";
+    std::cout << "\n==================================\n";
     std::cout << "인벤토리:\n";
-    if (Inventory.empty())
+    if(Inventory.empty())
     {
         std::cout << "인벤토리가 비어 있습니다.\n";
-    }
-    else
+    } else
     {
-        for (const auto& item : Inventory)
-        {
-            std::cout << item.first << ": " << item.second->GetAmount() << " 개\n";
-        }
+        sortInventory();
     }
 }
 
-// Inventory 정렬 함수
+
+
 void Character::sortInventory()
 {
-    // 정렬된 아이템을 담을 벡터 생성
-    std::vector<std::pair<std::string,std::unique_ptr<Item>>> sortedItems;
-
     // Inventory의 데이터를 벡터에 복사
+    std::vector<std::pair<std::string,std::unique_ptr<Item>>> sortedItems;
     for(auto& pair : Inventory)
     {
         sortedItems.push_back(std::move(pair));  // 이동
@@ -148,6 +142,7 @@ void Character::sortInventory()
         Inventory[item.first] = std::move(item.second);  // 이동
     }
 }
+
 
 // 아이템 추가
 void Character::AddItem(std::unique_ptr<Item> item)
