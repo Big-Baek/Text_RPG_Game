@@ -27,7 +27,7 @@ public:
         return Price;
     }
 
-    virtual int GetAmount() const
+    virtual int& GetAmount()
     {
         return Amount;
     }

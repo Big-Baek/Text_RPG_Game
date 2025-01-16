@@ -73,7 +73,7 @@ void GameManager::StartGame(Character* player, Shop* shop)
         if (choice == 1)
         {
             // 레벨 10 이상일 때 보스 몬스터와 전투
-            if (player->Level < 10)
+            if (player->Level >= 10)
             {
                 BossBattle(player);
                 break;  // 보스 전투 후 게임 종료
@@ -487,7 +487,7 @@ void GameManager::VisitShop(Character* player,Shop* shop,GameManager* gameManage
     }
 
     // 선택한 아이템 수량 확인
-    int itemAmount = itemToSell->second->GetAmount();
+    int itemAmount = itemToSell->second->GetAmount(); //아이템 포인터로 이동해서 갯수를 따온다
     int totalPrice = itemToSell->second->GetPrice();  // 기본 가격
 
     // GetType()으로 Equipment 객체를 가져오기
@@ -498,7 +498,8 @@ void GameManager::VisitShop(Character* player,Shop* shop,GameManager* gameManage
         // EquipmentType을 가져와서 비교
         if (equipment->GetTypeText() == "Consumable" ||
             equipment->GetTypeText() == "Weapon" ||
-            equipment->GetTypeText() == "Armor") {
+            equipment->GetTypeText() == "Armor") 
+        {
             totalPrice = static_cast<int>(totalPrice * 0.6);  //상점 구매 항목은 60% 가격으로 판매
         }
     }
@@ -522,14 +523,14 @@ void GameManager::VisitShop(Character* player,Shop* shop,GameManager* gameManage
             char sellChoice;
             std::cin >> sellChoice;
             if (sellChoice == 'Y' || sellChoice == 'y') {
-                player->Gold += totalPrice;
+                player->Gold += totalPrice; //정상
 
                 // 반복자 사용 후 삭제
                 std::cout << itemToSell->first << " 1개를 판매했습니다. 총 "
                     << totalPrice << " 골드가 추가되었습니다.\n";
 
                 // 아이템 삭제 (반복자 무효화됨)
-                player->Inventory.erase(itemToSell);
+                itemToSell->second->GetAmount() -= 1;
             }
             else {
                 std::cout << "판매를 진행하지 않습니다. 전 메뉴로 돌아갑니다.\n";
@@ -549,6 +550,7 @@ void GameManager::VisitShop(Character* player,Shop* shop,GameManager* gameManage
 
             // 아이템 삭제 (반복자 무효화됨)
             player->Inventory.erase(itemToSell);
+            
         }
         else {
             std::cout << "판매를 진행하지 않습니다. 전 메뉴로 돌아갑니다.\n";
